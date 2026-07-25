@@ -96,28 +96,52 @@ projetos/2-classificacao-cifar/
 
 ## 📝 Relatório do Candidato
 
-👤 **Nome Completo:**
+👤 **Nome Completo:** Luís Fellype Magalhães Cruz
 
 ### 1️⃣ Resumo da Arquitetura do Modelo
 
-Descreva a arquitetura da CNN implementada em `train_model.py` e a estratégia de data augmentation utilizada.
+A CNN foi dividida em 7 etapas:
+- 1: Armazenamento dos dados nas variáveis.
+- 2: Normalização dos dados para o intervalo [0, 1].
+- 3: Separação da quantidade de validação.
+- 4: Data augmentation.
+- 5: Blocos convolucionais (3 blocos).
+- 6: Achatamento da imagem.
+- 7: Classificação.
+
+A estratégia de data augmentation utilizada foi a aplicação de *RandomFlip*, *RandomRotation* e *RandomZoom* (ambas com 18 graus de limite).
 
 ### 2️⃣ Bibliotecas Utilizadas
 
-Liste as principais bibliotecas utilizadas, preferencialmente com suas versões.
+- TensorFlow (2.21.0)
+- NumPy (2.4.6)
 
 ### 3️⃣ Técnica de Otimização do Modelo
 
-Explique qual técnica foi utilizada para otimizar o modelo em `optimize_model.py`.
+Dynamic Range Quantization
 
 ### 4️⃣ Resultados Obtidos
 
-Informe a acurácia de validação obtida e o tamanho dos arquivos `model.h5` e `model.tflite`.
+- Acurácia de validação: 77.5%.
+- Tamanho do arquivo 'model.h5': 4266 KB.
+- Tamanho do arquivo 'model.tflite': 365 KB.
 
 ### 5️⃣ Comentários Adicionais (Opcional)
 
-Dificuldades encontradas, decisões técnicas importantes, limitações do modelo, aprendizados durante o desafio.
+Sendo a primeira vez que treino uma IA desse tipo, a maior dificuldade foi me adaptar aos conceitos e funções disponíveis.
+Fiz algumas decisões técnicas com base em pesquisas: porcentagem que teria maior eficiência para a quantidade de imagens de validação (as sugestões eram 20% e 30%, então optei por utilizar 20%), funções para *data augmentation* (implementei os exemplos sugeridos pelas intruções, mas pensei em usar a *layers.RandomBrightness* também para maior variação, mas no fim, acatei a decisão para não mudar tanto a imagem).
+Diante disso, posso afirmar que aprendi bastante com o projeto, tanto ao utilizar as ferramentas quanto à aplicação de conceitos.
 
 ### 6️⃣ Exemplo de Inferência
 
-Cole a saída do terminal ao rodar `run_inference.py` (predito vs. real para as 5+ amostras), e comente brevemente se houve algum caso interessante (acerto ou erro) entre as amostras testadas.
+Saída no terminal:
+
+```
+Amostra 1: predito=cat | real=cat
+Amostra 2: predito=ship | real=ship
+Amostra 3: predito=ship | real=ship
+Amostra 4: predito=airplane | real=airplane
+Amostra 5: predito=frog | real=frog
+```
+
+Sinto-me um pai orgulhoso aos acertos.

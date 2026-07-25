@@ -9,5 +9,6 @@ __pycache__/
 *.pyc
 
 # Ambientes / editores
+.venv/
 .vscode/
 .DS_Store
