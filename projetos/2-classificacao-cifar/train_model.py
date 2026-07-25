@@ -55,7 +55,7 @@ img = layers.Flatten()(img)
 img = layers.Dense(128, activation='relu')(img)
 img = layers.Dropout(0.4)(img)
 outputs = layers.Dense(10, activation='softmax')(img)
-model = models.Model(inputs=inputs, outputs=outputs, name="cifar10_cnn")
+model = models.Model(inputs=inputs, outputs=outputs)
 
 model.compile(
     optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
@@ -82,5 +82,5 @@ val_loss, val_acc = model.evaluate(x_val, y_val, verbose=0)
 
 print(f"Acurácia de validação final: {val_acc * 100:.2f}%")
 
-model.save('model.h5')
+tf.keras.models.save_model(model, 'model.h5', save_format='h5')
 print(f"Modelo salvo com sucesso em 'model.h5'")
