@@ -1,3 +1,5 @@
+import os
+os.environ["TF_USE_LEGACY_KERAS"] = "1"
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers, models, callbacks
@@ -73,7 +75,7 @@ history = model.fit(
     x_train, 
     y_train,
     validation_data=(x_val, y_val),
-    epochs=25,
+    epochs=30,
     batch_size=64,
     callbacks=[early_stopping]
 )
@@ -82,5 +84,5 @@ val_loss, val_acc = model.evaluate(x_val, y_val, verbose=0)
 
 print(f"Acurácia de validação final: {val_acc * 100:.2f}%")
 
-tf.keras.models.save_model(model, 'model.h5', save_format='h5')
+model.save('model.h5')
 print(f"Modelo salvo com sucesso em 'model.h5'")

@@ -122,7 +122,7 @@ Dynamic Range Quantization
 
 ### 4️⃣ Resultados Obtidos
 
-- Acurácia de validação: 77.5%.
+- Acurácia de validação: 78.14%.
 - Tamanho do arquivo 'model.h5': 4266 KB.
 - Tamanho do arquivo 'model.tflite': 365 KB.
 
