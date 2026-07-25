@@ -1,8 +1,9 @@
 import os
 os.environ["TF_USE_LEGACY_KERAS"] = "1"
+
 import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras import layers, models, callbacks
+import tf_keras as keras
+from tf_keras import layers, models, callbacks
 
 # ---------------------------------------------------------------------------
 # Projeto 2 — Classificação CIFAR-10
@@ -33,7 +34,7 @@ y_val = y_train[:validation_size]
 x_train = x_train[validation_size:]
 y_train = y_train[validation_size:]
 
-data_augmentation = tf.keras.Sequential([
+data_augmentation = keras.Sequential([
     layers.RandomFlip("horizontal"),
     layers.RandomRotation(0.05),
     layers.RandomZoom(0.05),
@@ -60,7 +61,7 @@ outputs = layers.Dense(10, activation='softmax')(img)
 model = models.Model(inputs=inputs, outputs=outputs)
 
 model.compile(
-    optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
+    optimizer=keras.optimizers.Adam(learning_rate=0.001),
     loss="sparse_categorical_crossentropy",
     metrics=["accuracy"]
 )
@@ -75,7 +76,7 @@ history = model.fit(
     x_train, 
     y_train,
     validation_data=(x_val, y_val),
-    epochs=30,
+    epochs=1,
     batch_size=64,
     callbacks=[early_stopping]
 )
@@ -84,5 +85,5 @@ val_loss, val_acc = model.evaluate(x_val, y_val, verbose=0)
 
 print(f"Acurácia de validação final: {val_acc * 100:.2f}%")
 
-model.save('model.h5')
+keras.models.save_model(model, 'model.h5', save_format='h5')
 print(f"Modelo salvo com sucesso em 'model.h5'")
