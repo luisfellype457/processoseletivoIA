@@ -4,25 +4,6 @@ os.environ["TF_USE_LEGACY_KERAS"] = "1"
 import tensorflow as tf
 import tf_keras as keras
 from tf_keras import layers, models, callbacks
-
-# ---------------------------------------------------------------------------
-# Projeto 2 — Classificação CIFAR-10
-#
-# Requisitos (veja README.md desta pasta para detalhes completos):
-#   1. Carregar o dataset CIFAR-10 via tf.keras.datasets.cifar10
-#   2. Normalizar as imagens para [0, 1] (shape (32, 32, 3))
-#   3. Separar um conjunto de validação
-#   4. Incluir data augmentation (ex: layers.RandomFlip, RandomRotation, RandomZoom)
-#      aplicada ao conjunto de treino
-#   5. Construir uma CNN com 3-4 blocos Conv2D + BatchNormalization + MaxPooling2D,
-#      seguida de Dropout antes da camada de saída (10 classes, softmax)
-#   6. Treinar com EarlyStopping monitorando a perda de validação
-#   7. Exibir a acurácia de validação final no terminal
-#   8. Salvar o modelo treinado como "model.h5"
-# ---------------------------------------------------------------------------
-
-# insira seu código aqui
-
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
 
 x_train = x_train.astype("float32") / 255.0
@@ -40,24 +21,28 @@ data_augmentation = keras.Sequential([
     layers.RandomZoom(0.05),
 ], name="data_augmentation")
 
+x_train_augmented = data_augmentation(x_train)
+
 inputs = layers.Input(shape=(32, 32, 3))
-img = data_augmentation(inputs)
 
-img = layers.Conv2D(32, (3, 3), padding='same', activation='relu')(img) #1
-img = layers.BatchNormalization()(img)
-img = layers.MaxPooling2D((2, 2))(img)
-img = layers.Conv2D(64, (3, 3), padding='same', activation='relu')(img) #2
-img = layers.BatchNormalization()(img)
-img = layers.MaxPooling2D((2, 2))(img)
-img = layers.Conv2D(128, (3, 3), padding='same', activation='relu')(img) #3
-img = layers.BatchNormalization()(img)
-img = layers.MaxPooling2D((2, 2))(img)
-img = layers.Dropout(0.3)(img)
+x = layers.Conv2D(32, (3, 3), padding='same', activation='relu')(inputs)
+x = layers.BatchNormalization()(x)
+x = layers.MaxPooling2D((2, 2))(x)
 
-img = layers.Flatten()(img)
-img = layers.Dense(128, activation='relu')(img)
-img = layers.Dropout(0.4)(img)
-outputs = layers.Dense(10, activation='softmax')(img)
+x = layers.Conv2D(64, (3, 3), padding='same', activation='relu')(x)
+x = layers.BatchNormalization()(x)
+x = layers.MaxPooling2D((2, 2))(x)
+
+x = layers.Conv2D(128, (3, 3), padding='same', activation='relu')(x)
+x = layers.BatchNormalization()(x)
+x = layers.MaxPooling2D((2, 2))(x)
+x = layers.Dropout(0.3)(x)
+
+x = layers.Flatten()(x)
+x = layers.Dense(128, activation='relu')(x)
+x = layers.Dropout(0.4)(x)
+outputs = layers.Dense(10, activation='softmax')(x)
+
 model = models.Model(inputs=inputs, outputs=outputs)
 
 model.compile(
@@ -73,7 +58,7 @@ early_stopping = callbacks.EarlyStopping(
 )
 
 history = model.fit(
-    x_train, 
+    x_train_augmented, 
     y_train,
     validation_data=(x_val, y_val),
     epochs=1,
@@ -82,8 +67,7 @@ history = model.fit(
 )
 
 val_loss, val_acc = model.evaluate(x_val, y_val, verbose=0)
-
 print(f"Acurácia de validação final: {val_acc * 100:.2f}%")
 
 keras.models.save_model(model, 'model.h5', save_format='h5')
-print(f"Modelo salvo com sucesso em 'model.h5'")
+print("Modelo salvo com sucesso em 'model.h5'")

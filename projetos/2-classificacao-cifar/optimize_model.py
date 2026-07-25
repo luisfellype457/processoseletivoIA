@@ -1,26 +1,23 @@
-import tensorflow as tf
 import os
+os.environ["TF_USE_LEGACY_KERAS"] = "1"
 
-# ---------------------------------------------------------------------------
-# Projeto 2 — Otimização do Modelo (CIFAR-10)
-#
-# Requisitos (veja README.md desta pasta para detalhes completos):
-#   1. Carregar o modelo treinado em "model.h5"
-#   2. Converter para TensorFlow Lite usando tf.lite.TFLiteConverter
-#   3. Aplicar uma técnica de otimização (ex: Dynamic Range Quantization,
-#      via converter.optimizations = [tf.lite.Optimize.DEFAULT])
-#   4. Salvar o resultado como "model.tflite"
-# ---------------------------------------------------------------------------
+import tensorflow as tf
+import tf_keras as keras
 
-# insira seu código aqui
+def main():
+    model_path = 'model.h5'
+    print(f"Carregando {model_path}...")
+    model = keras.models.load_model(model_path)
 
-model = tf.keras.models.load_model('model.h5')
+    converter = tf.lite.TFLiteConverter.from_keras_model(model)
+    converter.optimizations = [tf.lite.Optimize.DEFAULT]
 
-print("Convertendo...")
-converter = tf.lite.TFLiteConverter.from_keras_model(model)
-converter.optimizations = [tf.lite.Optimize.DEFAULT]
-tflite_model = converter.convert()
+    tflite_model = converter.convert()
 
-name = 'model.tl'
-with open('model.tflite', 'wb') as f:
-    f.write(tflite_model)
+    with open('model.tflite', 'wb') as f:
+        f.write(tflite_model)
+        
+    print("Sucesso! Arquivo model.tflite gerado.")
+
+if __name__ == "__main__":
+    main()
