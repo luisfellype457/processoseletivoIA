@@ -6,7 +6,6 @@ import tf_keras as keras
 
 def main():
     model_path = 'model.h5'
-    print(f"Carregando {model_path}...")
     model = keras.models.load_model(model_path)
 
     converter = tf.lite.TFLiteConverter.from_keras_model(model)
@@ -17,7 +16,7 @@ def main():
     with open('model.tflite', 'wb') as f:
         f.write(tflite_model)
         
-    print("Sucesso! Arquivo model.tflite gerado.")
+    print("Arquivo model.tflite gerado.")
 
 if __name__ == "__main__":
     main()
