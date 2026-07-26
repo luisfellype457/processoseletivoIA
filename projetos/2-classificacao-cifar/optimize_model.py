@@ -1,16 +1,9 @@
-import os
-os.environ["TF_USE_LEGACY_KERAS"] = "1"
-
 import tensorflow as tf
-
-try:
-    import tf_keras as keras
-except ImportError:
-    from tensorflow import keras
+from tensorflow import keras
 
 def main():
     model_path = 'model.h5'
-    model = keras.models.load_model(model_path)
+    model = tf.keras.models.load_model(model_path)
 
     converter = tf.lite.TFLiteConverter.from_keras_model(model)
     converter.optimizations = [tf.lite.Optimize.DEFAULT]

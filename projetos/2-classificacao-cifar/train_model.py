@@ -1,14 +1,6 @@
-import os
-os.environ["TF_USE_LEGACY_KERAS"] = "1"
-
 import tensorflow as tf
-
-try:
-    import tf_keras as keras
-    from tf_keras import layers, models, callbacks
-except ImportError:
-    from tensorflow import keras
-    from tensorflow.keras import layers, models, callbacks
+from tensorflow import keras
+from tensorflow.keras import layers, models, callbacks
 
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
 
@@ -34,11 +26,9 @@ inputs = layers.Input(shape=(32, 32, 3))
 x = layers.Conv2D(32, (3, 3), padding='same', activation='relu')(inputs)
 x = layers.BatchNormalization()(x)
 x = layers.MaxPooling2D((2, 2))(x)
-
 x = layers.Conv2D(64, (3, 3), padding='same', activation='relu')(x)
 x = layers.BatchNormalization()(x)
 x = layers.MaxPooling2D((2, 2))(x)
-
 x = layers.Conv2D(128, (3, 3), padding='same', activation='relu')(x)
 x = layers.BatchNormalization()(x)
 x = layers.MaxPooling2D((2, 2))(x)
