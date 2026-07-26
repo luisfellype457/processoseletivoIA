@@ -2,7 +2,11 @@ import os
 os.environ["TF_USE_LEGACY_KERAS"] = "1"
 
 import tensorflow as tf
-import tf_keras as keras
+
+try:
+    import tf_keras as keras
+except ImportError:
+    from tensorflow import keras
 
 def main():
     model_path = 'model.h5'

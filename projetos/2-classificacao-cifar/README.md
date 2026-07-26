@@ -143,5 +143,3 @@ Amostra 3: predito=ship | real=ship
 Amostra 4: predito=airplane | real=airplane
 Amostra 5: predito=frog | real=frog
 ```
-
-Sinto-me um pai orgulhoso aos acertos.
